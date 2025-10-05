@@ -63,30 +63,8 @@ We embed feature vectors into quantum states using parameterized rotations and e
 
 For each sample, we compute a “nominal” voltage based on SoC (via interpolation) and compare it to the actual voltage:
 
-BHI
-=
-𝑉
-measured
-𝑉
-nominal
-(
-SoC
-)
-×
-100
-BHI=
-V
-nominal
-	​
+<img width="428" height="129" alt="image" src="https://github.com/user-attachments/assets/08170fb6-9674-4e61-899a-0d1b7b79863a" />
 
-(SoC)
-V
-measured
-	​
-
-	​
-
-×100
 
 This gives a percentage measure of battery health relative to expected behavior.
 
