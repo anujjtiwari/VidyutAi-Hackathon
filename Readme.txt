@@ -7,6 +7,10 @@ Team name : Watt
 This repository contains the code, datasets, and notebooks created for the **VidyutAI Hackathon** project.  
 It demonstrates how data-driven AI models can help optimize Electric Vehicle (EV) systems — including data analysis, model development, and interactive dashboards.
 
+QUICK SETUP:
+- THE model-save folder contains joblib files for the model trained you just need to clone the repo and change the path for the directory in app.py file 
+- after changing the directory path in local machine simply run the app.py if it says "Running on http://127.0.0.1:5000" it is succesfully running
+- at the end just run the code "streamlit run dashboard.py" and you can run the dashboard smoothly! :)
 ---
 
 ## 📘 Table of Contents
