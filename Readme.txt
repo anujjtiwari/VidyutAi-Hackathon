@@ -1,192 +1,183 @@
 Team name : Watt 
 
-# ⚡ VidyutAi-Hackathon
-
-> **EV-AI — Intelligent Energy Solutions for the Future**
-
-This repository contains the code, datasets, and notebooks created for the **VidyutAI Hackathon** project.  
-It demonstrates how data-driven AI models can help optimize Electric Vehicle (EV) systems — including data analysis, model development, and interactive dashboards.
-
 QUICK SETUP:
 - THE model-save folder contains joblib files for the model trained you just need to clone the repo and change the path for the directory in app.py file 
 - after changing the directory path in local machine simply run the app.py if it says "Running on http://127.0.0.1:5000" it is succesfully running
 - at the end just run the code "streamlit run dashboard2.py" and you can run the dashboard smoothly! :)
 ---
 
-## 📘 Table of Contents
-- [Overview](#overview)
-- [Repository Structure](#repository-structure)
-- [Quickstart](#quickstart)
-- [Notebooks](#notebooks)
-- [Applications](#applications)
-- [Datasets](#datasets)
-- [Usage](#usage)
-- [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+VidyutAi-Hackathon ⚡
 
----
+EV-AI — Intelligent Energy & Battery Safety System
 
-## 🚀 Overview
+This repository contains the solution for the VidyutAi Hackathon project, focusing on predicting EV battery safety risks, computing a Battery Health Index (BHI), and recommending optimal charging/discharging strategies using AI / Reinforcement Learning.
 
-**VidyutAI-Hackathon** aims to leverage machine learning and AI for smarter energy and EV analytics.  
-The project includes:
-- **Data creation & preprocessing** (`DataCreator.ipynb`)
-- **Model training & evaluation** (`Main.ipynb`)
-- **Multiple interactive apps & dashboards** (`app.py`, `app2.py`, etc.)
-- **Supporting datasets** for experimentation
+🧩 Collaborators
 
-The focus is on applying data science to real-world EV or energy-related challenges — such as efficiency prediction, performance analysis, or intelligent monitoring.
+Vatsal
 
----
+Vishakh
 
-## 📂 Repository Structure
+Anuj
 
+📂 Repository Structure
+VidyutAi-Hackathon/
+│
+├── data/                         # Raw & processed datasets (Full-Data.csv, etc.)
+├── model-save/                   # Trained models & artifact files (scaler, QSVM, DQN, psi_train)
+├── notebooks/                     # Exploratory Data Analysis, model training, experiments
+│    ├── DataCreator.ipynb
+│    ├── Main.ipynb
+│    └── …  
+├── app.py                         # Main API / web interface
+├── dashboard2.py                  # Dashboard / UI frontend
+├── extra-codes/                   # Auxiliary scripts
+└── README.md                      # This file
 
+📘 Overview & Motivation
 
-.
-├── Data.csv
-├── Full-Data.csv
-├── data2.csv
-├── DataCreator.ipynb # Dataset generation & preprocessing notebook
-├── Main.ipynb # Main model training & analysis notebook
-├── app.py # Streamlit/Flask/Dash app (demo 1)
-├── app2.py # Alternate demo app
-├── app3.py # Alternate demo app
-└── dashboard2.py.py # Dashboard script (rename to dashboard2.py recommended)
+India is rapidly adopting EVs, but safety, reliability, and battery degradation remain key challenges. Factors such as thermal runaway from fast charging, environment stress (heat, humidity), and inconsistent diagnostics in charging infrastructure make it hard to build user confidence.
 
+This project addresses these challenges by building a data-driven backend that:
 
----
+Predicts battery safety risk levels (Low / Medium / High)
 
-## ⚙️ Quickstart
+Computes a Battery Health Index (BHI) in real time
 
-### 1️⃣ Clone the Repository
-```bash
+Detects anomalies (voltage drops, rapid temperature rise)
+
+Uses an RL agent to recommend charging actions (fast, slow, pause)
+
+Integrates everything into a dashboard / advisory UI
+
+🛠️ How It Works
+1. Data Preparation & Sampling
+
+We balance the dataset across risk classes (healthy, over-discharge, short-circuit), and pick features: SoC, Temperature, Voltage for model input.
+
+2. Quantum SVM (QSVM)
+
+We embed feature vectors into quantum states using parameterized rotations and entangling gates, compute a quantum kernel similarity matrix, and train an SVM on that kernel. This model predicts the risk class of new battery states.
+
+3. Battery Health Index (BHI)
+
+For each sample, we compute a “nominal” voltage based on SoC (via interpolation) and compare it to the actual voltage:
+
+BHI
+=
+𝑉
+measured
+𝑉
+nominal
+(
+SoC
+)
+×
+100
+BHI=
+V
+nominal
+	​
+
+(SoC)
+V
+measured
+	​
+
+	​
+
+×100
+
+This gives a percentage measure of battery health relative to expected behavior.
+
+4. Reinforcement Learning Agent
+
+We simulate a battery environment (state evolution of SoC, temperature, voltage) for actions: fast charge, slow charge, pause.
+The QSVM model is used inside the environment to estimate risk, and a reward function encourages safe behavior (e.g., penalizes overheating, deep discharge).
+A DQN agent learns which action to take in each state to maximize long-term safety and battery health.
+
+5. Dashboard & API
+
+Once models are trained, we save artifacts (scaler, QSVM, psi_train, DQN model). A Flask / Dash / Streamlit interface loads these, takes input readings (SoC, Temp, Voltage), and returns:
+
+The computed BHI
+
+Risk Level (Low / Medium / High)
+
+Risk probabilities
+
+Charging recommendation (fast / slow / pause)
+
+Actionable insight / advisory message
+
+The dashboard visualizes these in charts and user-friendly UI.
+
+🏁 Quickstart
+
+Clone the repository:
+
 git clone https://github.com/anujjtiwari/VidyutAi-Hackathon.git
 cd VidyutAi-Hackathon
 
-2️⃣ Set Up a Virtual Environment (Recommended)
+
+(Optional) Create a virtual environment:
+
 python -m venv .venv
-# Activate:
-# Windows:
-.venv\Scripts\activate
-# macOS / Linux:
-source .venv/bin/activate
+.venv\Scripts\activate     # Windows
+source .venv/bin/activate  # macOS / Linux
 
-3️⃣ Install Dependencies
 
-(A requirements.txt file can be added — see suggestions below)
+Install dependencies:
 
-Example packages commonly used:
+pip install -r requirements.txt
 
-pip install numpy pandas scikit-learn matplotlib jupyter
-pip install streamlit flask dash plotly
 
-4️⃣ Run the Notebooks
-jupyter notebook
-# Then open DataCreator.ipynb or Main.ipynb in the browser
+Train or load pre-trained models:
 
-📓 Notebooks
-DataCreator.ipynb
+Use notebooks in notebooks/ to preprocess, train, evaluate.
 
-Prepares and cleans datasets (Data.csv, Full-Data.csv, etc.)
+Models will be saved in model-save/.
 
-Handles preprocessing like normalization, feature generation, and merging.
+Run the web / dashboard app:
 
-Main.ipynb
-
-Main analysis pipeline:
-
-Exploratory Data Analysis (EDA)
-
-Model training & testing
-
-Result visualization
-
-🧠 Applications
-app.py, app2.py, app3.py
-
-Interactive dashboards or web apps (likely Streamlit, Flask, or Dash based)
-
-Used to visualize data insights and model outputs.
-
-dashboard2.py.py
-
-Visual dashboard (consider renaming to dashboard2.py).
-
-Likely integrates multiple views or charts for the dataset/model.
-
-To run:
-# If Streamlit:
-streamlit run app.py
-
-# If Flask or Dash:
 python app.py
 
 
-Then open the local URL displayed in your terminal (usually http://127.0.0.1:5000/).
+or for dashboard:
 
-📊 Datasets
-File	Description
-Data.csv	Processed dataset for initial model training
-data2.csv	Extended dataset with new parameters
-Full-Data.csv	Final combined dataset used for model testing
+streamlit run dashboard2.py
 
-Use DataCreator.ipynb to regenerate or customize these datasets.
 
-🧩 Usage
+Open your browser at the displayed URL (e.g. http://127.0.0.1:5000) and interact with the UI.
 
-Open DataCreator.ipynb → generate datasets
+🔮 Future Enhancements (Ideas)
 
-Open Main.ipynb → train models and visualize performance
+Expand feature set: include current, humidity, load, etc.
 
-Run app.py (or app2.py, app3.py) → launch dashboard demo
+Improve QSVM: explore deeper quantum circuits, better embeddings.
 
-🔮 Future Enhancements
+RL: incorporate longer horizons, more actions, charging station constraints.
 
- Add requirements.txt with exact package versions
+Real-time data ingestion from EV sensors.
 
- Merge dashboards into a single unified web app
+Deploy dashboard to mobile / tablet / embedded device.
 
- Add deployment via Streamlit Cloud or HuggingFace Spaces
+Add comparisons, degradation curves, historical tracking.
 
- Include saved model files (.pkl / .onnx) for quick loading
+Add unit tests, CI/CD integration, versioning.
 
- Add visual report (accuracy plots, confusion matrix, etc.)
+📞 Contact & Contribution
 
- Rename dashboard2.py.py → dashboard2.py
-
-🤝 Contributing
+Maintained by: Vatsal, Vishakh, Anuj
 
 Contributions are welcome!
 
-Fork this repository
+Fork the repo
 
-Create your feature branch:
+Create your feature branch: git checkout -b feat/whatever
 
-git checkout -b feat/your-feature
+Commit your changes
 
+Push and open a Pull Request
 
-Commit your changes and push
-
-Submit a Pull Request with a clear description
-
-🪪 License
-
-This project currently does not include a license.
-To make it open-source, add a LICENSE file (e.g., MIT, Apache-2.0, or GPL-3.0).
-
-Example MIT license header:
-
-MIT License
-Copyright (c) 2025
-Permission is hereby granted, free of charge, to any person obtaining a copy...
-
-📬 Contact
-
-Maintainer: @anujjtiwari
-
-For collaborations or clarifications, open an Issue
-.
-        
+Let’s accelerate electric mobility together 🔋🚗
